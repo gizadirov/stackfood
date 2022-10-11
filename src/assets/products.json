@@ -1,0 +1,633 @@
+{
+  "total_size": 12,
+  "limit": "10",
+  "offset": "1",
+  "products": [
+    {
+      "id": 69,
+      "name": "Medu Vada",
+      "description": "Menu Vada is crispy, fluffy, soft, and delicious lentil fritters from South Indian cuisine.",
+      "image": "2021-08-21-6120e7a4b7b2a.png",
+      "category_id": 20,
+      "category_ids": [
+        {
+          "id": "20",
+          "position": 1
+        }
+      ],
+      "variations": [
+      ],
+      "add_ons": [
+      ],
+      "attributes": [
+      ],
+      "choice_options": [
+      ],
+      "price": 95,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 0,
+      "discount_type": "percent",
+      "available_time_starts": "00:01:00",
+      "available_time_ends": "23:57:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:46:44.000000Z",
+      "updated_at": "2022-01-11T07:45:07.000000Z",
+      "order_count": 4,
+      "avg_rating": 0,
+      "rating_count": 0,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    },
+    {
+      "id": 68,
+      "name": "grilled lemon herb mediterranean chicken salad",
+      "description": "This Grilled Lemon Herb Mediterranean Chicken Salad recipe is as close to perfect as you can get! Full of Mediterranean flavours: olives, tomatoes, cucumber, avocados, and chicken for a complete meal in a salad bowl!",
+      "image": "2021-08-21-6120e72547646.png",
+      "category_id": 20,
+      "category_ids": [
+        {
+          "id": "20",
+          "position": 1
+        }
+      ],
+      "variations": [
+        {
+          "type": "lagre",
+          "price": 420
+        },
+        {
+          "type": "medium",
+          "price": 320
+        },
+        {
+          "type": "standard",
+          "price": 220
+        }
+      ],
+      "add_ons": [
+      ],
+      "attributes": [
+        "1"
+      ],
+      "choice_options": [
+        {
+          "name": "choice_1",
+          "title": "Size",
+          "options": [
+            "lagre",
+            "medium",
+            "standard"
+          ]
+        }
+      ],
+      "price": 320,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 0,
+      "discount_type": "percent",
+      "available_time_starts": "00:02:00",
+      "available_time_ends": "23:46:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:44:37.000000Z",
+      "updated_at": "2021-08-21T20:31:57.000000Z",
+      "order_count": 0,
+      "avg_rating": 0,
+      "rating_count": 0,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    },
+    {
+      "id": 67,
+      "name": "Meat Pizza",
+      "description": "If you\u2019re looking for a pie with a bit more heft, a meat pizza is a perfect and popular choice.",
+      "image": "2021-08-21-6120e6dadf410.png",
+      "category_id": 17,
+      "category_ids": [
+        {
+          "id": "17",
+          "position": 1
+        }
+      ],
+      "variations": [
+        {
+          "type": "Small",
+          "price": 400
+        },
+        {
+          "type": "Large",
+          "price": 750
+        }
+      ],
+      "add_ons": [
+        {
+          "id": 31,
+          "name": "Pepsi",
+          "price": 18,
+          "created_at": "2021-08-21T11:29:34.000000Z",
+          "updated_at": "2021-08-21T11:29:34.000000Z",
+          "restaurant_id": 2,
+          "status": 1
+        },
+        {
+          "id": 34,
+          "name": "Extra Meat",
+          "price": 14,
+          "created_at": "2021-08-21T11:32:24.000000Z",
+          "updated_at": "2021-08-21T11:32:24.000000Z",
+          "restaurant_id": 2,
+          "status": 1
+        }
+      ],
+      "attributes": [
+        "1"
+      ],
+      "choice_options": [
+        {
+          "name": "choice_1",
+          "title": "Size",
+          "options": [
+            "Small",
+            "Large"
+          ]
+        }
+      ],
+      "price": 400,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 30,
+      "discount_type": "amount",
+      "available_time_starts": "02:00:00",
+      "available_time_ends": "22:00:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:43:22.000000Z",
+      "updated_at": "2022-02-27T07:12:15.000000Z",
+      "order_count": 1,
+      "avg_rating": 4,
+      "rating_count": 2,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    },
+    {
+      "id": 66,
+      "name": "Chicken Shawarma",
+      "description": "Robust and flavorful easy Chicken Shawarma at home! Beats takeout any day of the week, and is perfect for work or school lunch. Plus, my creamy white garlic sauce for Chicken Shawarma adds a bright creamy tang.",
+      "image": "2021-08-21-6120e6767300f.png",
+      "category_id": 20,
+      "category_ids": [
+        {
+          "id": "20",
+          "position": 1
+        }
+      ],
+      "variations": [
+        {
+          "type": "big",
+          "price": 210
+        },
+        {
+          "type": "normal",
+          "price": 310
+        },
+        {
+          "type": "medium",
+          "price": 410
+        }
+      ],
+      "add_ons": [
+        {
+          "id": 2,
+          "name": "Cheese",
+          "price": 15,
+          "created_at": "2021-08-21T08:19:43.000000Z",
+          "updated_at": "2021-08-21T08:19:43.000000Z",
+          "restaurant_id": 2,
+          "status": 1
+        },
+        {
+          "id": 30,
+          "name": "Coke",
+          "price": 12,
+          "created_at": "2021-08-21T11:29:24.000000Z",
+          "updated_at": "2021-08-21T11:29:24.000000Z",
+          "restaurant_id": 2,
+          "status": 1
+        },
+        {
+          "id": 32,
+          "name": "Sauce",
+          "price": 11,
+          "created_at": "2021-08-21T11:29:59.000000Z",
+          "updated_at": "2021-08-21T11:29:59.000000Z",
+          "restaurant_id": 2,
+          "status": 1
+        }
+      ],
+      "attributes": [
+        "1"
+      ],
+      "choice_options": [
+        {
+          "name": "choice_1",
+          "title": "Size",
+          "options": [
+            "big",
+            "normal",
+            "medium"
+          ]
+        }
+      ],
+      "price": 210,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 12,
+      "discount_type": "percent",
+      "available_time_starts": "05:40:00",
+      "available_time_ends": "20:40:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:41:42.000000Z",
+      "updated_at": "2021-08-21T11:41:42.000000Z",
+      "order_count": 0,
+      "avg_rating": 0,
+      "rating_count": 0,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    },
+    {
+      "id": 64,
+      "name": "Cheese Pizza",
+      "description": "It should be no shocker that a classic is the statistical favorite. Cheese pizza is one of the most popular choices",
+      "image": "2021-08-21-6120e61452e2b.png",
+      "category_id": 17,
+      "category_ids": [
+        {
+          "id": "17",
+          "position": 1
+        }
+      ],
+      "variations": [
+        {
+          "type": "Small",
+          "price": 250
+        },
+        {
+          "type": "Medium",
+          "price": 350
+        }
+      ],
+      "add_ons": [
+        {
+          "id": 31,
+          "name": "Pepsi",
+          "price": 18,
+          "created_at": "2021-08-21T11:29:34.000000Z",
+          "updated_at": "2021-08-21T11:29:34.000000Z",
+          "restaurant_id": 2,
+          "status": 1
+        }
+      ],
+      "attributes": [
+        "1"
+      ],
+      "choice_options": [
+        {
+          "name": "choice_1",
+          "title": "Size",
+          "options": [
+            "Small",
+            "Medium"
+          ]
+        }
+      ],
+      "price": 250,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 7,
+      "discount_type": "percent",
+      "available_time_starts": "00:01:00",
+      "available_time_ends": "23:57:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:40:04.000000Z",
+      "updated_at": "2021-08-21T20:32:40.000000Z",
+      "order_count": 1,
+      "avg_rating": 0,
+      "rating_count": 0,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    },
+    {
+      "id": 62,
+      "name": "Thai Fried Rice",
+      "description": "An authentic recipe for Thai fried rice \u2013 just like you get in Thailand and at Thai restaurants! Make this with shrimp\/prawns, chicken or any protein you wish.",
+      "image": "2021-08-21-6120e5955e1d1.png",
+      "category_id": 20,
+      "category_ids": [
+        {
+          "id": "20",
+          "position": 1
+        }
+      ],
+      "variations": [
+        {
+          "type": "Half",
+          "price": 1
+        },
+        {
+          "type": "Quater",
+          "price": 1
+        },
+        {
+          "type": "Full",
+          "price": 1
+        }
+      ],
+      "add_ons": [
+      ],
+      "attributes": [
+        "2"
+      ],
+      "choice_options": [
+        {
+          "name": "choice_2",
+          "title": "Capacity",
+          "options": [
+            "Half",
+            "Quater",
+            "Full"
+          ]
+        }
+      ],
+      "price": 160,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 0,
+      "discount_type": "percent",
+      "available_time_starts": "05:37:00",
+      "available_time_ends": "21:37:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:37:57.000000Z",
+      "updated_at": "2021-08-21T11:37:57.000000Z",
+      "order_count": 0,
+      "avg_rating": 0,
+      "rating_count": 0,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    },
+    {
+      "id": 61,
+      "name": "Pepperoni Pizza",
+      "description": "Pepperoni is an American variety of salami, made from cured pork and beef seasoned with paprika or other chili pepper",
+      "image": "2021-08-21-6120eb4af0745.png",
+      "category_id": 17,
+      "category_ids": [
+        {
+          "id": "17",
+          "position": 1
+        }
+      ],
+      "variations": [
+        {
+          "type": "Small",
+          "price": 310
+        },
+        {
+          "type": "Medium",
+          "price": 425
+        },
+        {
+          "type": "Large",
+          "price": 550
+        }
+      ],
+      "add_ons": [
+        {
+          "id": 2,
+          "name": "Cheese",
+          "price": 15,
+          "created_at": "2021-08-21T08:19:43.000000Z",
+          "updated_at": "2021-08-21T08:19:43.000000Z",
+          "restaurant_id": 2,
+          "status": 1
+        },
+        {
+          "id": 31,
+          "name": "Pepsi",
+          "price": 18,
+          "created_at": "2021-08-21T11:29:34.000000Z",
+          "updated_at": "2021-08-21T11:29:34.000000Z",
+          "restaurant_id": 2,
+          "status": 1
+        }
+      ],
+      "attributes": [
+        "1"
+      ],
+      "choice_options": [
+        {
+          "name": "choice_1",
+          "title": "Size",
+          "options": [
+            "Small",
+            "Medium",
+            "Large"
+          ]
+        }
+      ],
+      "price": 310,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 10,
+      "discount_type": "amount",
+      "available_time_starts": "00:15:00",
+      "available_time_ends": "23:45:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:36:58.000000Z",
+      "updated_at": "2021-10-16T18:45:03.000000Z",
+      "order_count": 1,
+      "avg_rating": 0,
+      "rating_count": 0,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    },
+    {
+      "id": 59,
+      "name": "FRIED RICE",
+      "description": "This Chinese-inspired fried rice recipe is my absolute fave. It\u2019s quick and easy to make, customizable with any of your favorite mix-ins, and so irresistibly delicious.",
+      "image": "2021-08-21-6120e4dcd5194.png",
+      "category_id": 20,
+      "category_ids": [
+        {
+          "id": "20",
+          "position": 1
+        }
+      ],
+      "variations": [
+        {
+          "type": "half",
+          "price": 120
+        },
+        {
+          "type": "quater",
+          "price": 150
+        },
+        {
+          "type": "full",
+          "price": 199.96
+        }
+      ],
+      "add_ons": [
+      ],
+      "attributes": [
+        "1"
+      ],
+      "choice_options": [
+        {
+          "name": "choice_1",
+          "title": "Size",
+          "options": [
+            "half",
+            "quater",
+            "full"
+          ]
+        }
+      ],
+      "price": 120,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 0,
+      "discount_type": "percent",
+      "available_time_starts": "05:33:00",
+      "available_time_ends": "18:33:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:34:52.000000Z",
+      "updated_at": "2021-08-21T11:34:52.000000Z",
+      "order_count": 0,
+      "avg_rating": 0,
+      "rating_count": 0,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    },
+    {
+      "id": 58,
+      "name": "Steak Kebabs",
+      "description": "Steak Kebabs are the one of the tastiest summertime dinners! These are layered with juicy tender pieces of flavorful, marinated beef and colorful quartet of tender veggies. An exciting recipe the whole family can agree on!",
+      "image": "2021-08-21-6120e4523fa9d.png",
+      "category_id": 20,
+      "category_ids": [
+        {
+          "id": "20",
+          "position": 1
+        }
+      ],
+      "variations": [
+      ],
+      "add_ons": [
+      ],
+      "attributes": [
+      ],
+      "choice_options": [
+      ],
+      "price": 160,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 0,
+      "discount_type": "percent",
+      "available_time_starts": "00:31:00",
+      "available_time_ends": "23:35:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:32:34.000000Z",
+      "updated_at": "2021-10-16T18:44:54.000000Z",
+      "order_count": 1,
+      "avg_rating": 0,
+      "rating_count": 0,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    },
+    {
+      "id": 57,
+      "name": "Steak Kebabs",
+      "description": "Steak Kebabs are the one of the tastiest summertime dinners! These are layered with juicy tender pieces of flavorful, marinated beef and colorful quartet of tender veggies. An exciting recipe the whole family can agree on!",
+      "image": "2021-08-21-6120e44ea58c5.png",
+      "category_id": 20,
+      "category_ids": [
+        {
+          "id": "20",
+          "position": 1
+        }
+      ],
+      "variations": [
+      ],
+      "add_ons": [
+      ],
+      "attributes": [
+      ],
+      "choice_options": [
+      ],
+      "price": 160,
+      "tax": 5,
+      "tax_type": "percent",
+      "discount": 0,
+      "discount_type": "percent",
+      "available_time_starts": "06:31:00",
+      "available_time_ends": "17:31:00",
+      "veg": 0,
+      "status": 1,
+      "restaurant_id": 2,
+      "created_at": "2021-08-21T11:32:30.000000Z",
+      "updated_at": "2021-08-21T11:32:30.000000Z",
+      "order_count": 0,
+      "avg_rating": 0,
+      "rating_count": 0,
+      "restaurant_name": "Hungry Puppets",
+      "restaurant_discount": 15,
+      "restaurant_opening_time": "10:01",
+      "restaurant_closing_time": "23:59",
+      "schedule_order": true
+    }
+  ]
+}
