@@ -588,7 +588,7 @@
             }
         },
         created() {
-            let categoriesOrdered = categories_data.filter((categorie) => categorie.status).sort((a, b) => a - b);
+            let categoriesOrdered = categories_data.filter((categorie) => categorie.status).sort((a, b) => a.position - b.position);
 
             let categories = {};
             categoriesOrdered.forEach((categorie) => { categories[categorie.id] = categorie; });
@@ -607,7 +607,7 @@
             this.categories = categoriesOrdered.filter((categorie) => categories[categorie.id]['products']);
 
             let categories_products = [];
-            this.categories.forEach((categorie) => { categories_products.push(categories[categorie.id])});
+            this.categories.forEach((categorie) => {categories_products.push(categories[categorie.id])});
 
             this.categories_products = categories_products;
         }

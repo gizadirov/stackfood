@@ -95,8 +95,8 @@
             open(product) {
                 this.product = Object.assign({}, product);
                 this.product.quantity = 1;
-                product.choice_options.forEach((co) => { co.choice = co.options[0] });
-                product.add_ons.forEach((ao) => { ao.choice_count = 0; ao.choice = false })
+                this.product.choice_options.forEach((co) => { co.choice = co.options[0] });
+                this.product.add_ons.forEach((ao) => { ao.choice_count = 0; ao.choice = false })
                 //discounts
                 //NB!
                 this.modalInstance.show();

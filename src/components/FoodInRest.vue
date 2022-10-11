@@ -1,5 +1,5 @@
 ﻿<template>
-    <section v-for="categorie in categories_products" :key="categorie.id" :id="'section-'+categorie.id">
+    <section v-for="categorie in categories_products" :key="categorie.id" :id="'section-' + categorie.id">
         <h4>{{ categorie.name }}</h4>
         <div class="row">
             <div v-for="product in categorie.products" :key="product.id" class="col-md-6">
