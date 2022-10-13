@@ -23,16 +23,16 @@
                     </div>
                     <div class="row" v-if="product.variation.length">
                         <div class="col-1"></div>
-                        <div class="col-11">
-                            <span class="d-inline-block float-none small">Variations:</span>&nbsp;
-                            <span class="px-2 bg-light d-inline-block float-none small" v-for="variation_ in product.variation" :key="variation_.title">{{variation_.title}}: {{variation_.type}}</span>&nbsp;
+                        <div class="col-11 d-flex">
+                            <div class="small d-flex">Variations:</div>
+                            <div class="px-1 mr-1 bg-light small d-flex" v-for="variation_ in product.variation" :key="variation_.title">{{variation_.title}}: {{variation_.type}}</div>
                         </div>
                     </div>
                     <div class="row" v-if="product.add_ons.length">
                         <div class="col-1"></div>
-                        <div class="col-11">
-                            <span class="d-inline-block float-none small">Addons:</span>&nbsp;
-                            <span class="px-2 bg-light d-inline-block float-none small" v-for="addon_ in product.add_ons" :key="addon_.title">{{addon_.quantity}}x {{addon_.name}}</span>&nbsp;
+                        <div class="col-11 d-flex">
+                            <div class="small d-flex">Addons:</div>
+                            <div class="px-1 mr-1 bg-light float-none small d-flex" v-for="addon_ in product.add_ons" :key="addon_.title"><div v-if="addon_.quantity">{{addon_.quantity}}x {{addon_.name}}</div></div>
                         </div>
                     </div>
                 </li>
@@ -188,5 +188,8 @@
 
     .box_order a.no_active {
         padding-left: 0 !important;
+    }
+    .box_order .main ul li a:before{
+        top: -12px !important;
     }
 </style>

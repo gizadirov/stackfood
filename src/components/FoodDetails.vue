@@ -14,7 +14,7 @@
                         <div class="dec button_inc" @click="decQuantity">-</div>
                     </div>
                     <!--Choise options-->
-                    <div v-if="productData.choiceOptions">
+                    <div v-if="productData.choiceOptions.length">
                         <div class="mb-3" v-for="choice_option, index1 in productData.choiceOptions" :key="choice_option.name">
                             <h5>{{ choice_option.title }}</h5>
                             <ul class="clearfix">
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <!--Add-ons-->
-                    <div class="mb-3" v-if="productData.addons">
+                    <div class="mb-3" v-if="productData.addons.length">
                         <h5>Addons</h5>
                         <div class="mb-3">
                             <div class="add_ons" v-for="add_on, index in productData.addons" :key="add_on.id">
@@ -123,26 +123,24 @@
         },
         computed: {
             totalAmount() {
-
                 let app = this;
 
                 let totalPrice = 0;
 
-                if (this.model.chooseOptions) {
+                if (this.model.chooseOptions.length) {
                     this.model.chooseOptions.forEach((chooseOption, index) => {
                         let chooseOption_ = app.productData.choiceOptions[index].options[chooseOption];
                         totalPrice += (chooseOption_.price - chooseOption_.discount_amount) * app.model.quantity;
-
-                    })
+                    });
                 } else {
                     totalPrice += this.productData.discountedPrice * this.model.quantity;
                 }
 
-                if (this.model.chooseAddons) {
+                if (this.model.chooseAddons.length) {
                     this.model.chooseAddons.forEach((chooseAddon, index) => {
                         let chooseAddon_ = app.productData.addons[index];
                         totalPrice += chooseAddon_.price * chooseAddon;
-                    })
+                    });
                 }
 
                 return totalPrice;
@@ -150,109 +148,92 @@
         },
         methods: {
             initProductData(product) {
-
                 this.productData.price = product.price;
                 this.productData.discountAmount = get_discount_amount(product.price, product.discount, product.discount_type);
                 this.productData.discountedPrice = product.price - this.productData.discountAmount;
 
                 //variations
-                if (product.choice_options.length) {
+                let choiceOptions = this.productData.choiceOptions = [];
 
-                    let choiceOptions = this.productData.choiceOptions = [];
-
-                    product.choice_options.forEach((choiceOption) => {
-                        let choiceOption_ = {
-                            title: choiceOption.title,
-                            name: choiceOption.name,
-                            options: []
-                        };
-                        choiceOption.options.forEach((option) => {
-                            let variation_ = product.variations.find((variation) => variation.type == option);
-                            let option_ = {
-                                type: option,
-                                price: variation_.price,
-                                discount_amount: get_discount_amount(variation_.price, product.discount, product.discount_type)
-                            }
-                            choiceOption_.options.push(option_);
-                        });
-                        choiceOptions.push(choiceOption_);
+                product.choice_options.forEach((choiceOption) => {
+                    let choiceOption_ = {
+                        title: choiceOption.title,
+                        name: choiceOption.name,
+                        options: []
+                    };
+                    choiceOption.options.forEach((option) => {
+                        let variation_ = product.variations.find((variation) => variation.type == option);
+                        let option_ = {
+                            type: option,
+                            price: variation_.price,
+                            discount_amount: get_discount_amount(variation_.price, product.discount, product.discount_type)
+                        }
+                        choiceOption_.options.push(option_);
                     });
-                }
+                    choiceOptions.push(choiceOption_);
+                });
 
                 //addons
-                if (product.add_ons.length) {
+                let addons = this.productData.addons = [];
 
-                    let addons = this.productData.addons = [];
-
-                    product.add_ons.forEach((addon) => {
-                        addons.push(Object.assign({}, addon));
-                    });
-                }
+                product.add_ons.forEach((addon) => {
+                    addons.push(Object.assign({}, addon));
+                });
 
                 this.productData.product = product;
             },
             initModel(productInCart) {
-
                 if (productInCart) {
                     this.model.storeId = productInCart.store_id;
                     this.model.quantity = productInCart.quantity;
 
-                    //variations
-                    if (this.productData.choiceOptions) {
-                        let app = this;
-                        this.model.chooseOptions = productInCart.variation.map((variation, index) => {
-                            return app.productData.choiceOptions[index].options.findIndex((option) => option.type == variation.type);
-                        })
-                    }
-                    //addons
-                    if (this.productData.addons) {
-                        this.model.chooseAddons = [];
-                        this.model.chooseAddons.length = this.productData.addons.length;
-                        this.model.chooseAddons.fill(0);
-                        let app = this;
-                        productInCart.add_on_ids.map((addOnIds) => {
-                            let addonIndex = app.productData.addons.findIndex((addons) => addons.id == addOnIds.id);
-                            this.model.chooseAddons[addonIndex] = addOnIds.quantity;
+                    let app = this;
 
-                        })
-                    }
+                    //variations
+                    this.model.chooseOptions = productInCart.variation.map((variation, index) => {
+                        return app.productData.choiceOptions[index].options.findIndex((option) => option.type == variation.type);
+                    });
+
+                    //addons
+                    this.model.chooseAddons = [];
+                    this.model.chooseAddons.length = this.productData.addons.length;
+                    this.model.chooseAddons.fill(0);
+
+                    productInCart.add_on_ids.map((addOnIds) => {
+                        let addonIndex = app.productData.addons.findIndex((addons) => addons.id == addOnIds.id);
+                        this.model.chooseAddons[addonIndex] = addOnIds.quantity;
+                    });
                 } else {
                     this.model.storeId = Date.now();
                     this.model.quantity = 1;
+
                     //variations
-                    if (this.productData.choiceOptions) {
-                        this.model.chooseOptions = [];
-                        this.model.chooseOptions.length = this.productData.choiceOptions.length;
-                        this.model.chooseOptions.fill(0);
-                    }
+                    this.model.chooseOptions = [];
+                    this.model.chooseOptions.length = this.productData.choiceOptions.length;
+                    this.model.chooseOptions.fill(0);
+
                     //addons
-                    if (this.productData.addons) {
-                        this.model.chooseAddons = [];
-                        this.model.chooseAddons.length = this.productData.addons.length;
-                        this.model.chooseAddons.fill(0);
-                    }
+                    this.model.chooseAddons = [];
+                    this.model.chooseAddons.length = this.productData.addons.length;
+                    this.model.chooseAddons.fill(0);
                 }
             },
             open(product) {
-
                 this.initProductData(product);
                 this.initModel();
                 this.box.modalInstance.show();
             },
             edit(cartProduct) {
-
                 this.isEdit = true;
                 this.initProductData(cartProduct.product);
                 this.initModel(cartProduct);
                 this.box.modalInstance.show();
             },
             close() {
-
                 this.box.modalInstance.hide();
             },
             afterClose() {
                 //clean
-
                 this.productData = {
                     product: null,
                     choiceOptions: null,
@@ -261,52 +242,41 @@
                     discountedPrice: null,
                     discountAmount: null
                 };
-
                 this.model = {
                     chooseOptions: undefined,
                     chooseAddons: undefined,
                     quantity: undefined,
                     storeId: undefined
                 };
-
                 this.isEdit = false;
             },
             addQuantity() {
-
                 this.model.quantity++;
             },
             decQuantity() {
-
                 if (this.model.quantity > 1) {
                     this.model.quantity--;
                 }
             },
             changeOption(index1, index2) {
-
                 this.model.chooseOptions[index1] = index2;
             },
             addAddOns(index) {
-
                 this.model.chooseAddons[index]++;
             },
             decAddOns(index) {
-
                 let quantity = this.model.chooseAddons[index];
-
                 if (quantity > 0) {
                     this.model.chooseAddons[index]--;
                 }
             },
             totalAddonPrice(index) {
-
                 return this.productData.addons[index].price * this.model.chooseAddons[index];
             },
             totalOptionPrice(option) {
-
                 return (option.price - option.discount_amount) * this.model.quantity;
             },
             changeAddOns(index) {
-
                 let quantity = this.model.chooseAddons[index];
                 if (quantity) {
                     this.model.chooseAddons[index] = 0;
@@ -327,51 +297,39 @@
                 cartObject.discounted_price = this.productData.discountedPrice;
                 cartObject.discount_amount = this.productData.discountAmount;
                 cartObject.quantity = this.model.quantity;
-
-                //variations
-                if (this.model.chooseOptions) {
-
-                    cartObject.variation = this.model.chooseOptions.map((choice_option, index) => {
-                        let option = app.productData.choiceOptions[index].options[choice_option];
-                        return {
-                            title: app.productData.choiceOptions[index].title,
-                            type: option.type,
-                            price: option.price,
-                            discount_amount: option.discount_amount
-                        };
-                    });
-                }
-
-                //addons
-                if (this.model.chooseAddons) {
-                    cartObject.add_on_ids = this.model.chooseAddons.map((quantity, index) => {
-                        return {
-                            id: app.productData.addons[index].id,
-                            quantity: quantity
-                        };
-                    }).filter((addon) => addon.quantity > 0);
-
-                    cartObject.add_ons = this.model.chooseAddons.map((quantity, index) => {
-                        let addon = app.productData.addons[index];
-                        return {
-                            id: addon.id,
-                            name: addon.name,
-                            price: addon.price,
-                            quantity: quantity
-                        };
-                    }).filter((addon) => addon.quantity > 0);
-                }
-
+                cartObject.store_id = this.model.storeId;
                 cartObject.product = this.productData.product;
 
-                if (this.isEdit) {
-                    cartObject.store_id = this.model.storeId;
-                    this.$store.commit('edit_in_cart', cartObject);
+                //variations
+                cartObject.variation = this.model.chooseOptions.map((choice_option, index) => {
+                    let option = app.productData.choiceOptions[index].options[choice_option];
+                    return {
+                        title: app.productData.choiceOptions[index].title,
+                        type: option.type,
+                        price: option.price,
+                        discount_amount: option.discount_amount
+                    };
+                });
 
-                } else {
-                    cartObject.store_id = Date.now();
-                    this.$store.commit('add_to_cart', cartObject);
-                }
+                //addons
+                cartObject.add_on_ids = this.model.chooseAddons.map((quantity, index) => {
+                    return {
+                        id: app.productData.addons[index].id,
+                        quantity: quantity
+                    };
+                });
+
+                cartObject.add_ons = this.model.chooseAddons.map((quantity, index) => {
+                    let addon = app.productData.addons[index];
+                    return {
+                        id: addon.id,
+                        name: addon.name,
+                        price: addon.price,
+                        quantity: quantity
+                    };
+                });
+
+                this.$store.commit(this.isEdit ? "edit_in_cart" : "add_to_cart", cartObject);
 
                 this.close();
             }
