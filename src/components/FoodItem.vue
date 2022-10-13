@@ -3,7 +3,7 @@
     <h3>{{ name }}</h3>
     <p>{{ description }}</p>
     <span v-if="hasDiscount">
-        <strong>${{ discountedPrice }}&nbsp;<s>${{ normalPrice }}</s></strong>
+        <strong>${{ discounted_price }}&nbsp;<s>${{ normalPrice }}</s></strong>
     </span>
     <span v-else>
         <strong>${{ normalPrice }}</strong>
@@ -20,7 +20,7 @@
                 image: undefined,
                 hasDiscount: false,
                 normalPrice: undefined,
-                discountedPrice: undefined 
+                discounted_price: undefined
             }
         },
         created() {
@@ -30,8 +30,12 @@
             this.normalPrice = this.product.price;
             if (this.product.discount !== 0) {
                 this.hasDiscount = true;
-                this.discountedPrice = Math.round(this.product.price - this.product.price * this.product.discount / 100);
-            } 
+                if (this.product.discount_type == 'percent') {
+                    this.discounted_price = Math.round(this.product.price - this.product.price * this.product.discount / 100);
+                } else if (this.product.discount_type == 'amount') {
+                    this.discounted_price = this.product.price - this.product.discount;
+                }
+            }
         }
     }
 </script>
