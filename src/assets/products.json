@@ -293,6 +293,14 @@
         {
           "type": "Medium",
           "price": 350
+        },
+        {
+          "type": "Circle",
+          "price": 0
+        },
+        {
+          "type": "Square",
+          "price": 3
         }
       ],
       "add_ons": [
@@ -317,7 +325,16 @@
             "Small",
             "Medium"
           ]
+        },
+        {
+          "name": "choice_2",
+          "title": "Form",
+          "options": [
+            "Circle",
+            "Square"
+          ]
         }
+
       ],
       "price": 250,
       "tax": 5,

@@ -23,6 +23,11 @@
             'food-details': FoodDetails,
             'food-item': FoodItem
         },
+        mounted() {
+            this.emitter.on("edit-food-details", product => {
+                this.$refs.foodDetails.edit(product);
+            });
+        },
         methods: {
             openFoodDetails(product) {
                 this.$refs.foodDetails.open(product);

@@ -1,56 +1,64 @@
 ﻿<template>
     <div class="modal fade" id="foodDetails" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content" v-if="product">
+            <div class="modal-content" v-if="productData.product">
                 <div class="modal-header">
-                    <h3 class="modal-title">{{ product.name }}</h3>
+                    <h3 class="modal-title">{{ productData.product.name }}</h3>
                     <button title="Close (Esc)" type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body content">
                     <h5>Quantity</h5>
                     <div class="numbers-row">
-                        <input type="text" :value="quantity" class="qty2 form-control">
+                        <input type="text" :value="model.quantity" disabled="disabled" class="qty2 form-control">
                         <div class="inc button_inc" @click="addQuantity">+</div>
                         <div class="dec button_inc" @click="decQuantity">-</div>
                     </div>
                     <!--Choise options-->
-                    <div v-for="choice_option, index1 in product.choice_options" :key="choice_option.name">
-                        <h5>{{ choice_option.title }}</h5>
-                        <ul class="clearfix">
-                            <li v-for="option, index2 in choice_option.options" :key="option">
-                                <label class="container_radio">
-                                    {{ option.type }}<span><span v-if="index1 != 0">+</span>${{ option.discounted_price }}</span>
-                                    <input type="radio" @change="changeOption(index1, index2)" :name="choice_option.name+'choiceOptions'" :checked="choices[index1] == index2">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </li>
-                        </ul>
+                    <div v-if="productData.choiceOptions">
+                        <div class="mb-3" v-for="choice_option, index1 in productData.choiceOptions" :key="choice_option.name">
+                            <h5>{{ choice_option.title }}</h5>
+                            <ul class="clearfix">
+                                <li v-for="option, index2 in choice_option.options" :key="option.name">
+                                    <label class="container_radio">
+                                        {{ option.type }}
+                                        <span v-if="model.chooseOptions[index1] == index2">
+                                            <strong><span v-show="index1" class="float-none">+ </span>${{ getFormattedPrice(totalOptionPrice(option)) }}</strong>
+                                        </span>
+                                        <span v-else><span v-show="index1" class="float-none">+ </span>${{ getFormattedPrice(totalOptionPrice(option)) }}</span>
+                                        <input type="radio" @change="changeOption(index1, index2)" :name="choice_option.name+'choiceOptions'" :checked="model.chooseOptions[index1] == index2">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <!--Add-ons-->
-                    <h5 v-if="product.add_ons.length">Addons</h5>
-                    <div class="mb-3">
-                        <div class="add_ons" v-for="add_on, index in product.add_ons" :key="add_on.id">
-                            <div class="row">
-                                <label class="col container_check">
-                                    {{ add_on.name }}
-                                    <input type="checkbox" @change="changeAddOns(index)" :checked="add_ons[index]">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <div v-if="add_ons[index]" class="col numbers-row w-25">
-                                    <input type="text" :value="add_ons[index]" class="qty2 form-control">
-                                    <div class="inc button_inc" @click="addAddOns(index)">+</div>
-                                    <div class="dec button_inc" @click="decAddOns(index)">-</div>
-                                </div>
-                                <div class="col text-end">
-                                    <span v-if="add_ons[index]">
-                                        <strong>+ ${{ totalAddonPrice(index) }}</strong>
-                                    </span>
-                                    <span v-else>+ ${{ add_on.price }}</span>
+                    <div class="mb-3" v-if="productData.addons">
+                        <h5>Addons</h5>
+                        <div class="mb-3">
+                            <div class="add_ons" v-for="add_on, index in productData.addons" :key="add_on.id">
+                                <div class="row">
+                                    <label class="col container_check">
+                                        {{ add_on.name }}
+                                        <input type="checkbox" @change="changeAddOns(index)" :checked="model.chooseAddons[index]">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <div v-if="model.chooseAddons[index]" class="col numbers-row w-25">
+                                        <input type="text" :value="model.chooseAddons[index]" disabled="disabled" class="qty2 form-control">
+                                        <div class="inc button_inc" @click="addAddOns(index)">+</div>
+                                        <div class="dec button_inc" @click="decAddOns(index)">-</div>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span v-if="model.chooseAddons[index]">
+                                            <strong>+ ${{ getFormattedPrice(totalAddonPrice(index)) }}</strong>
+                                        </span>
+                                        <span v-else>+ ${{ getFormattedPrice(productData.addons[index].price) }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <h5>Total Amount: ${{ totalAmount }}</h5>
+                    <h5 class="mb-3">Total Amount: ${{ getFormattedPrice(totalAmount) }}</h5>
                     <div class="modal-footer">
                         <div class="row small-gutters w-100">
                             <div class="col-md-4">
@@ -70,167 +78,300 @@
 <script>
 
     import { Modal } from 'bootstrap'
-    import _ from 'lodash'
 
-    const get_discount_value = (price, discount, discount_type) => {
+    const get_discount_amount = (price, discount, discount_type) => {
         if (discount_type == "percent") {
-            return (price - price * discount / 100.0).toFixed(2);
+            return price * discount / 100.0
         } else if (discount_type == "amount") {
-            return price - discount;
+            return discount;
         } else {
-            return price;
+            return 0;
         }
-    }
+    };
 
     export default {
         data() {
             return {
-                el: undefined,
-                modalInstance: undefined,
-                product: null,
-                choices: [],
-                hasChoice: false,
-                hasAddons: false,
-                add_ons: [],
-                quantity: 1,
-
+                box: { el: undefined, modalInstance: undefined },
+                productData: {
+                    product: null,
+                    choiceOptions: null,
+                    addons: null,
+                    price: null,
+                    discountedPrice: null,
+                    discountAmount: null,
+                },
+                model: {
+                    chooseOptions: undefined,
+                    chooseAddons: undefined,
+                    quantity: undefined,
+                    storeId: undefined
+                },
+                isEdit: false
             }
         },
         mounted() {
+
             let modalId = "foodDetails";
-            this.el = document.getElementById(modalId);
-            this.modalInstance = new Modal(this.el);
+            this.box.el = document.getElementById(modalId);
+            this.box.modalInstance = new Modal(this.box.el);
 
             var app = this;
-
-            this.el.addEventListener("hidden.bs.modal", function () {
+            this.box.el.addEventListener("hidden.bs.modal", function () {
                 app.afterClose();
             });
         },
         computed: {
             totalAmount() {
-                let totalPrice = 0;
-                if (this.hasChoice) {
-                    for (let i = 0; i < this.choices.length; i++) {
 
-                        let variationIndex = this.choices[i];
-                        if (i == 0) {
-                            totalPrice = this.product.variations[variationIndex].discounted_price * this.quantity;
-                            break;
-                        }
-                        totalPrice += this.product.variations[variationIndex].discounted_price * this.quantity;
-                    }
+                let app = this;
+
+                let totalPrice = 0;
+
+                if (this.model.chooseOptions) {
+                    this.model.chooseOptions.forEach((chooseOption, index) => {
+                        let chooseOption_ = app.productData.choiceOptions[index].options[chooseOption];
+                        totalPrice += (chooseOption_.price - chooseOption_.discount_amount) * app.model.quantity;
+
+                    })
                 } else {
-                    totalPrice += this.product.discounted_price * this.quantity;
+                    totalPrice += this.productData.discountedPrice * this.model.quantity;
                 }
 
-                for (let i = 0; i < this.add_ons.length; i++) {
-                    let quantity = this.add_ons[i];
-                    totalPrice += this.product.add_ons[i].price * quantity;
+                if (this.model.chooseAddons) {
+                    this.model.chooseAddons.forEach((chooseAddon, index) => {
+                        let chooseAddon_ = app.productData.addons[index];
+                        totalPrice += chooseAddon_.price * chooseAddon;
+                    })
                 }
 
                 return totalPrice;
             }
         },
         methods: {
+            initProductData(product) {
+
+                this.productData.price = product.price;
+                this.productData.discountAmount = get_discount_amount(product.price, product.discount, product.discount_type);
+                this.productData.discountedPrice = product.price - this.productData.discountAmount;
+
+                //variations
+                if (product.choice_options.length) {
+
+                    let choiceOptions = this.productData.choiceOptions = [];
+
+                    product.choice_options.forEach((choiceOption) => {
+                        let choiceOption_ = {
+                            title: choiceOption.title,
+                            name: choiceOption.name,
+                            options: []
+                        };
+                        choiceOption.options.forEach((option) => {
+                            let variation_ = product.variations.find((variation) => variation.type == option);
+                            let option_ = {
+                                type: option,
+                                price: variation_.price,
+                                discount_amount: get_discount_amount(variation_.price, product.discount, product.discount_type)
+                            }
+                            choiceOption_.options.push(option_);
+                        });
+                        choiceOptions.push(choiceOption_);
+                    });
+                }
+
+                //addons
+                if (product.add_ons.length) {
+
+                    let addons = this.productData.addons = [];
+
+                    product.add_ons.forEach((addon) => {
+                        addons.push(Object.assign({}, addon));
+                    });
+                }
+
+                this.productData.product = product;
+            },
+            initModel(productInCart) {
+
+                if (productInCart) {
+                    this.model.storeId = productInCart.store_id;
+                    this.model.quantity = productInCart.quantity;
+
+                    //variations
+                    if (this.productData.choiceOptions) {
+                        let app = this;
+                        this.model.chooseOptions = productInCart.variation.map((variation, index) => {
+                            return app.productData.choiceOptions[index].options.findIndex((option) => option.type == variation.type);
+                        })
+                    }
+                    //addons
+                    if (this.productData.addons) {
+                        this.model.chooseAddons = [];
+                        this.model.chooseAddons.length = this.productData.addons.length;
+                        this.model.chooseAddons.fill(0);
+                        let app = this;
+                        productInCart.add_on_ids.map((addOnIds) => {
+                            let addonIndex = app.productData.addons.findIndex((addons) => addons.id == addOnIds.id);
+                            this.model.chooseAddons[addonIndex] = addOnIds.quantity;
+
+                        })
+                    }
+                } else {
+                    this.model.storeId = Date.now();
+                    this.model.quantity = 1;
+                    //variations
+                    if (this.productData.choiceOptions) {
+                        this.model.chooseOptions = [];
+                        this.model.chooseOptions.length = this.productData.choiceOptions.length;
+                        this.model.chooseOptions.fill(0);
+                    }
+                    //addons
+                    if (this.productData.addons) {
+                        this.model.chooseAddons = [];
+                        this.model.chooseAddons.length = this.productData.addons.length;
+                        this.model.chooseAddons.fill(0);
+                    }
+                }
+            },
             open(product) {
-                let product_ = _.cloneDeep(product);
 
-                product_.discounted_price = get_discount_value(product_.price, product_.discount, product_.discount_type);
+                this.initProductData(product);
+                this.initModel();
+                this.box.modalInstance.show();
+            },
+            edit(cartProduct) {
 
-                product_.variations.forEach((variation) => {
-                    variation.discounted_price = get_discount_value(variation.price, product_.discount, product_.discount_type);
-                })
-
-                this.hasChoice = product_.choice_options.length > 0;
-                if (this.hasChoice) {
-                    this.choices.length = product_.choice_options.length;
-                    this.choices.fill(0);
-                }
-
-                product_.choice_options.forEach((choice_option) => {
-                    choice_option.options = choice_option.options.map((option) => {
-                        let variationIndex = product_.variations.findIndex((variation) => variation.type == option);
-                        let variation = Object.assign({}, product_.variations[variationIndex]);
-                        variation.index = variationIndex;
-                        return variation;
-                    })
-                });
-
-                this.hasAddons = product_.add_ons.length > 0;
-                if (this.hasAddons) {
-                    this.add_ons.length = product_.add_ons.length;
-                    this.add_ons.fill(0);
-                }
-                console.log(product)
-                this.product = product_;
-
-                this.modalInstance.show();
+                this.isEdit = true;
+                this.initProductData(cartProduct.product);
+                this.initModel(cartProduct);
+                this.box.modalInstance.show();
             },
             close() {
-                this.modalInstance.hide();
+
+                this.box.modalInstance.hide();
             },
             afterClose() {
-                //clean model
-                this.product = null;
-                this.choices = [];
-                this.hasChoice = false;
-                this.hasAddons = false;
-                this.add_ons = [];
-                this.quantity = 1;
+                //clean
+
+                this.productData = {
+                    product: null,
+                    choiceOptions: null,
+                    addons: null,
+                    price: null,
+                    discountedPrice: null,
+                    discountAmount: null
+                };
+
+                this.model = {
+                    chooseOptions: undefined,
+                    chooseAddons: undefined,
+                    quantity: undefined,
+                    storeId: undefined
+                };
+
+                this.isEdit = false;
             },
             addQuantity() {
-                this.quantity++;
+
+                this.model.quantity++;
             },
             decQuantity() {
-                if (this.quantity > 1) {
-                    this.quantity--;
+
+                if (this.model.quantity > 1) {
+                    this.model.quantity--;
                 }
             },
             changeOption(index1, index2) {
-                this.choices[index1] = index2;
+
+                this.model.chooseOptions[index1] = index2;
             },
             addAddOns(index) {
-                this.add_ons[index]++;
+
+                this.model.chooseAddons[index]++;
             },
             decAddOns(index) {
-                let quantity = this.add_ons[index];
+
+                let quantity = this.model.chooseAddons[index];
 
                 if (quantity > 0) {
-                    this.add_ons[index]--;
+                    this.model.chooseAddons[index]--;
                 }
             },
             totalAddonPrice(index) {
-                return this.product.add_ons[index].price * this.add_ons[index];
+
+                return this.productData.addons[index].price * this.model.chooseAddons[index];
+            },
+            totalOptionPrice(option) {
+
+                return (option.price - option.discount_amount) * this.model.quantity;
             },
             changeAddOns(index) {
-                let quantity = this.add_ons[index];
+
+                let quantity = this.model.chooseAddons[index];
                 if (quantity) {
-                    this.add_ons[index] = 0;
+                    this.model.chooseAddons[index] = 0;
                 } else {
-                    this.add_ons[index] = 1;
+                    this.model.chooseAddons[index] = 1;
                 }
+            },
+            getFormattedPrice(price) {
+                return price.toFixed(2);
             },
             addToCart() {
                 let app = this;
-                let cart_object = {};
-                cart_object.id = this.product.id;
-                cart_object.price = this.product.price;
-                cart_object.discounted_price = this.totalAmount;
-                cart_object.quantity = this.quantity;
-                cart_object.variation = this.choices.map((choice, index) => {
-                    let variationIndex = app.product.choice_options[index].options[choice].index;
-                    return app.product.variations[variationIndex];
-                });
-                cart_object.add_on_ids = this.add_ons.map((quantity, index) => {
-                    return {
-                        "id": app.product.add_ons[index].id,
-                        "quantity": quantity
-                    };
-                });
-                cart_object.product = this.product;
 
-                this.$store.commit('add_to_cart', cart_object);
+                let cartObject = {};
+
+                cartObject.id = this.productData.product.id;
+                cartObject.price = this.productData.price;
+                cartObject.discounted_price = this.productData.discountedPrice;
+                cartObject.discount_amount = this.productData.discountAmount;
+                cartObject.quantity = this.model.quantity;
+
+                //variations
+                if (this.model.chooseOptions) {
+
+                    cartObject.variation = this.model.chooseOptions.map((choice_option, index) => {
+                        let option = app.productData.choiceOptions[index].options[choice_option];
+                        return {
+                            title: app.productData.choiceOptions[index].title,
+                            type: option.type,
+                            price: option.price,
+                            discount_amount: option.discount_amount
+                        };
+                    });
+                }
+
+                //addons
+                if (this.model.chooseAddons) {
+                    cartObject.add_on_ids = this.model.chooseAddons.map((quantity, index) => {
+                        return {
+                            id: app.productData.addons[index].id,
+                            quantity: quantity
+                        };
+                    }).filter((addon) => addon.quantity > 0);
+
+                    cartObject.add_ons = this.model.chooseAddons.map((quantity, index) => {
+                        let addon = app.productData.addons[index];
+                        return {
+                            id: addon.id,
+                            name: addon.name,
+                            price: addon.price,
+                            quantity: quantity
+                        };
+                    }).filter((addon) => addon.quantity > 0);
+                }
+
+                cartObject.product = this.productData.product;
+
+                if (this.isEdit) {
+                    cartObject.store_id = this.model.storeId;
+                    this.$store.commit('edit_in_cart', cartObject);
+
+                } else {
+                    cartObject.store_id = Date.now();
+                    this.$store.commit('add_to_cart', cartObject);
+                }
 
                 this.close();
             }
@@ -261,5 +402,9 @@
 
     .add_ons {
         margin-left: 10px;
+    }
+
+    .qty2.form-control:disabled {
+        background-color: inherit !important;
     }
 </style>

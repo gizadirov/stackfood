@@ -7,12 +7,40 @@
         <!-- /head -->
         <div class="main">
             <ul class="clearfix">
-                <li v-for="product, index in $store.state.cart_list" :key="index"><a href="#" @click="removeFromCart(product.id)">{{ product.quantity }}x {{ product.product.name }}</a><span>${{ product.discounted_price }}</span></li>
+                <li v-for="product, index in $store.state.cart_list" :key="index">
+                    <div class="row">
+                        <div class="col-1">
+                            <a href="#" @click.prevent="decProductCart(product.store_id)"></a>
+                        </div>
+                        <div class="col-9">
+                            <a class="no_active" href="#" @click="editFoodDetails(product)">
+                                {{ product.quantity }}x {{ product.product.name }}
+                            </a>
+                        </div>
+                        <div class="col-2">
+                            <span>${{ getFormattedPrice(getTotalProductPrice(product)) }}</span>
+                        </div>
+                    </div>
+                    <div class="row" v-if="product.variation.length">
+                        <div class="col-1"></div>
+                        <div class="col-11">
+                            <span class="d-inline-block float-none small">Variations:</span>&nbsp;
+                            <span class="px-2 bg-light d-inline-block float-none small" v-for="variation_ in product.variation" :key="variation_.title">{{variation_.title}}: {{variation_.type}}</span>&nbsp;
+                        </div>
+                    </div>
+                    <div class="row" v-if="product.add_ons.length">
+                        <div class="col-1"></div>
+                        <div class="col-11">
+                            <span class="d-inline-block float-none small">Addons:</span>&nbsp;
+                            <span class="px-2 bg-light d-inline-block float-none small" v-for="addon_ in product.add_ons" :key="addon_.title">{{addon_.quantity}}x {{addon_.name}}</span>&nbsp;
+                        </div>
+                    </div>
+                </li>
             </ul>
             <ul class="clearfix">
-                <li>Subtotal<span>${{ subtotal }}</span></li>
+                <li>Subtotal<span>${{ getFormattedPrice(subtotal) }}</span></li>
                 <li>Delivery fee<span>$10</span></li>
-                <li class="total">Total<span>${{ total }}</span></li>
+                <li class="total">Total<span>${{ getFormattedPrice(total) }}</span></li>
             </ul>
             <div class="row opt_order">
                 <div class="col-6">
@@ -115,21 +143,50 @@
 <script>
     export default {
         methods: {
-            removeFromCart(productId) {
-                console.log(productId)
+            decProductCart(store_id) {
+                this.$store.commit('dec_product_from_cart', store_id);
+            },
+            getFormattedPrice(price) {
+                return price.toFixed(2);
+            },
+            editFoodDetails(product) {
+                this.emitter.emit("edit-food-details", product);
+            },
+            getTotalProductPrice(product) {
+                let totalPrice = 0;
+                if (product.variation.length) {
+                    product.variation.forEach((variation) => {
+                        totalPrice += (variation.price - variation.discount_amount) * product.quantity;
+                    })
+                } else {
+                    totalPrice = product.discounted_price * product.quantity;
+                }
+                if (product.add_ons.length) {
+                    product.add_ons.forEach((addon) => { totalPrice += addon.price * addon.quantity; })
+                }
+                return totalPrice;
             }
         },
         computed: {
             subtotal() {
+                let app = this;
                 let sum = 0;
-                this.$store.state.cart_list.forEach((product) => { sum += product.discounted_price; });
+                this.$store.state.cart_list.forEach((product) => { sum += app.getTotalProductPrice(product); });
                 return sum;
             },
             total() {
-                //delivey fee
+                //delivery fee
                 return this.subtotal + 10;
             }
         }
-
     }
 </script>
+<style>
+    .box_order a.no_active:before {
+        content: none !important;
+    }
+
+    .box_order a.no_active {
+        padding-left: 0 !important;
+    }
+</style>
