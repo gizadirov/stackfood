@@ -3,7 +3,11 @@ import { createStore } from 'vuex'
 const store = createStore({
     state() {
         return {
-            cart_list: []
+            cart_list: [],
+            cart_delivery: {
+                day: null,
+                time: null
+            }
         }
     },
     mutations: {
@@ -15,9 +19,23 @@ const store = createStore({
                     Object.assign(state, { cart_list: JSON.parse(cart_list) })
                 );
             }
+
+            let cart_delivery = localStorage.getItem('cart_delivery');
+
+            if (cart_delivery) {
+                this.replaceState(
+                    Object.assign(state, { cart_delivery: JSON.parse(cart_delivery) })
+                );
+            }
         },
         add_to_cart(state, product) {
             state.cart_list.push(product);
+        },
+        set_delivery_day(state, day) {
+            state.cart_delivery.day = day;
+        },
+        set_delivery_time(state, time) {
+            state.cart_delivery.time = time;
         },
         edit_in_cart(state, product) {
             let productIndex = state.cart_list.findIndex((product_) => product_.store_id == product.store_id);
@@ -40,6 +58,7 @@ const store = createStore({
 
 store.subscribe((mutation, state) => {
     localStorage.setItem('cart_list', JSON.stringify(state.cart_list));
+    localStorage.setItem('cart_delivery', JSON.stringify(state.cart_delivery));
 });
 
 export default store;

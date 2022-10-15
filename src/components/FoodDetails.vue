@@ -319,7 +319,7 @@
                     };
                 });
 
-                cartObject.add_ons = this.model.chooseAddons.map((quantity, index) => {
+                cartObject.add_ons = this.model.chooseAddons.filter((quantity) => quantity > 0).map((quantity, index) => {
                     let addon = app.productData.addons[index];
                     return {
                         id: addon.id,
