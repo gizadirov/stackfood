@@ -65,7 +65,7 @@
                                 <button type="reset" @click="close()" class="btn_1 outline full-width mb-mobile">Cancel</button>
                             </div>
                             <div class="col-md-8">
-                                <button @click="addToCart" type="reset" class="btn_1 full-width">Add to cart</button>
+                                <button @click="addToCart" type="reset" class="btn_1 full-width"><span v-if="isEdit">Update cart</span><span v-else>Add to cart</span></button>
                             </div>
                         </div>
                     </div>
