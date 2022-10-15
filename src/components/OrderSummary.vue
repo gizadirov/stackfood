@@ -95,7 +95,7 @@
             </div>
             <!-- /dropdown -->
             <div class="btn_1_mobile">
-                <a href="order.html" class="btn_1 gradient full-width mb_5 disabled" :disabled="!thereIsProductsInCart">Order Now</a>
+                <a href="#" @click.prevent="orderNow()" class="btn_1 gradient full-width mb_5 disabled" :disabled="!thereIsProductsInCart">Order Now</a>
                 <div class="text-center" v-show="thereIsProductsInCart"><small>No money charged on this steps</small></div>
             </div>
         </div>
