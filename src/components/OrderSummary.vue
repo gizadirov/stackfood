@@ -41,7 +41,6 @@
                         </div>
                     </li>
                 </ul>
-
                 <ul class="clearfix">
                     <li>Subtotal:<span>${{ getFormattedPrice(subtotal) }}</span></li>
                     <li>Delivery fee: <span v-if="deliveryFee">${{ deliveryFee }}</span><span v-else>Please, choose date and time</span></li>
@@ -103,7 +102,7 @@
 </template>
 
 <script>
-    const deliveyOptions = {
+    const deliveryOptions = {
         deliveryFee: 10,
         daysDelivered: [
             {
@@ -175,11 +174,17 @@
     };
 
     export default {
+        props: ["restaurant"],
         data() {
             return {
-                deliveryOptions: deliveyOptions,
+                deliveryOptions: deliveryOptions,
                 dayDelivered: this.$store.state.cart_delivery.day,
                 timeDelivered: this.$store.state.cart_delivery.time
+            }
+        },
+        created() {
+            if (this.$store.state.restaurant.id != this.restaurant.id) {
+                this.$store.commit('empty_cart');
             }
         },
         methods: {

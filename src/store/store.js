@@ -7,6 +7,10 @@ const store = createStore({
             cart_delivery: {
                 day: null,
                 time: null
+            },
+            restaurant: {
+                id: null,
+                name: null
             }
         }
     },
@@ -25,6 +29,14 @@ const store = createStore({
             if (cart_delivery) {
                 this.replaceState(
                     Object.assign(state, { cart_delivery: JSON.parse(cart_delivery) })
+                );
+            }
+
+            let restaurant = localStorage.getItem('restaurant');
+
+            if (restaurant) {
+                this.replaceState(
+                    Object.assign(state, { restaurant: JSON.parse(restaurant) })
                 );
             }
         },
@@ -52,6 +64,17 @@ const store = createStore({
                     state.cart_list.splice(productIndex, 1);
                 }
             }
+        },
+        set_restaurant(state, restaurant) {
+            state.restaurant = restaurant;
+        },
+        empty_cart(state) {
+            state.cart_list = [];
+            state.cart_delivery = {
+                day: null,
+                time: null
+            };
+
         }
     }
 })
@@ -59,6 +82,7 @@ const store = createStore({
 store.subscribe((mutation, state) => {
     localStorage.setItem('cart_list', JSON.stringify(state.cart_list));
     localStorage.setItem('cart_delivery', JSON.stringify(state.cart_delivery));
+    localStorage.setItem('restaurant', JSON.stringify(state.restaurant));
 });
 
 export default store;

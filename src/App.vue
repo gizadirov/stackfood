@@ -152,7 +152,7 @@
                     </div>
                     <!-- /col -->
                     <div class="col-lg-4" id="sidebar_fixed">
-                       <order-summary />
+                        <order-summary :restaurant="restaurant" />
                         <!-- /box_order -->
                         <div class="btn_reserve_fixed"><a href="#0" class="btn_1 gradient full-width">View Basket</a></div>
                     </div>
@@ -451,7 +451,7 @@
     </div>
     <!-- /Sign In Modal -->
     <!-- Modal item order -->
-   
+
 </template>
 
 <script>
@@ -463,6 +463,10 @@
     import CategoriesList from './components/CategoriesList.vue';
     import OrderSummary from './components/OrderSummary.vue';
 
+    const restaurant = {
+        id: "2",
+        name: "Loriem ipsum restaurant"
+    }
 
     export default {
         components: {
@@ -474,6 +478,7 @@
             return {
                 categories: [],
                 categories_products: {},
+                restaurant: restaurant
             }
         },
         beforeCreate() {
@@ -499,9 +504,12 @@
             this.categories = categoriesOrdered.filter((categorie) => categories[categorie.id]['products']);
 
             let categories_products = [];
-            this.categories.forEach((categorie) => {categories_products.push(categories[categorie.id])});
+            this.categories.forEach((categorie) => { categories_products.push(categories[categorie.id]) });
 
             this.categories_products = categories_products;
+        },
+        mounted() {
+            this.$store.commit('set_restaurant', restaurant);
         }
     }
 </script>
